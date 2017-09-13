@@ -1,6 +1,6 @@
 ## Solution overview
 
-For more information about this solution, see [Blueprint for PCI DSS-compliant environments](http://aka.ms/pciblueprint).
+For more information about this solution, see [Azure Solutions Blueprint for PCI DSS-compliant environments](http://aka.ms/pciblueprint).
 
 ## Disclaimer and acknowledgements
 
