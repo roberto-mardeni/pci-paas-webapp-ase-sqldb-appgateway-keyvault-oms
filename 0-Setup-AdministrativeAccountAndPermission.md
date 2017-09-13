@@ -1,4 +1,4 @@
-# Automated Foundational Architecture for PCI DSS-Compliant Environments
+# Azure Solutions Blueprint for PCI DSS-Compliant Environments
 
 ## Script Details: `0-Setup-AdministrativeAccountAndPermission.ps1`
 
@@ -27,13 +27,13 @@ This command will validate or install any missing PowerShell modules which are r
 
 ```powershell
 .\0-Setup-AdministrativeAccountAndPermission.ps1 
-    -azureADDomainName contosowebstore.onmicrosoft.com
+    -azureADDomainName contosowebstore.com
     -tenantId XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
     -subscriptionId XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
     -configureGlobalAdmin 
  ```
 
- This command will deploy installed modules, and setup the solution on a **new subscription**. It will create the user `adminXX@contosowebstore.onmicrosoft.com` with a randomly generated strong password (15 characters minimum, with uppercase and lowercase letters, and at least one number and one special character.) 
+ This command will deploy installed modules, and setup the solution on a **new subscription**. It will create the user `adminXX@contosowebstore.com` with a randomly generated strong password (15 characters minimum, with uppercase and lowercase letters, and at least one number and one special character.) 
  
 # Required parameters
 
@@ -51,7 +51,7 @@ Specifies the ID of a subscription. If you do not specify this parameter, the ac
 
 > -configureGlobalAdmin
 
-Attempt to create an administrator user configured as a subscription administrator. An Active Directory Administrator with global privileges is required to run the installation. The local administrator must be in the `.onmicrosoft.com` domain namespace to run this solution. This step helps create the correct administrator user.
+Attempt to create an administrator user configured as a subscription administrator. An Active Directory Administrator with global privileges is required to run the installation. The local administrator must be in the `contosowebstore.com` domain namespace to run this solution. This step helps create the correct administrator user.
 
 > -installModules
 

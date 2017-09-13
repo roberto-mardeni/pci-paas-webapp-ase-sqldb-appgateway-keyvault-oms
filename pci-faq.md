@@ -1,4 +1,4 @@
-# Automated Foundational Architecture for PCI DSS-Compliant Environments
+# Azure Solutions Blueprint for PCI DSS-Compliant Environments
 
 ## FAQ and troubleshooting
 
@@ -41,15 +41,15 @@
 
 ### The scripts fail with a permission error. What do I do next?
 > The following logins should be tested whenever you restart your PowerShell session. This may not always be necessary, but it is strongly recommended to ensure the correct credentials are cached in your new session. At all times for this demo, log in as the **admin** user in our example.  
-1. Connect to your [Azure AD service](https://docs.microsoft.com/en-us/powershell/module/azuread/connect-azuread?view=azureadps-2.0)  by running the following command as your admin user (such as admin\@pcidemo.onmicrosoft.com).
+1. Connect to your [Azure AD service](https://docs.microsoft.com/en-us/powershell/module/azuread/connect-azuread?view=azureadps-2.0)  by running the following command as your admin user (such as admin\@contosowebstore.com).
 ```powershell
     Connect-AzureAD
 ```
-2. [Connect to your Azure Active Directory](https://docs.microsoft.com/en-us/powershell/module/msonline/connect-msolservice?view=azureadps-1.0) by running the following command as your admin user (such as admin\@pcidemo.onmicrosoft.com).
+2. [Connect to your Azure Active Directory](https://docs.microsoft.com/en-us/powershell/module/msonline/connect-msolservice?view=azureadps-1.0) by running the following command as your admin user (such as admin\@contosowebstore.com).
 ```powershell
     Connect-MsolService
 ```
-3.  [Connect to Azure Resource Manager](https://msdn.microsoft.com/en-us/library/mt125356.aspx) by running the following command as your admin user (such as admin\@pcidemo.onmicrosoft.com).
+3.  [Connect to Azure Resource Manager](https://msdn.microsoft.com/en-us/library/mt125356.aspx) by running the following command as your admin user (such as admin\@contosowebstore.com).
 ```powershell
     Login-AzureRmAccount
 ```
@@ -74,6 +74,6 @@ Set-MsolUserPassword -userPrincipalName [sqladmin@yourdomain] -NewPassword [NEWP
 | Security Layer | Azure Marketplace Product(s) |
 | --- | --- |
 | Continuous Compliance Monitoring | [CloudNeeti - Continuous Governance of Azure Assets](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/cloudneeti.cloudneeti_enterpise?tab=Overview) |
-| Network Security and Management | [Azure Marketplace: Network Security](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/category/networking?page=1)        |
+| Network Security and Management | [Azure Marketplace: Network Security](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/category/networking?page=1) |
 | Extending Identity Security | [Azure Marketplace: Security + Identity](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/category/security-identity?page=1) |
 | Extending Monitoring and Diagnostics 	| [Azure Marketplace: Monitoring + Diagnostics](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/category/monitoring-management?page=1&subcategories=monitoring-diagnostics) |
