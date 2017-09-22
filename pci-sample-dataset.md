@@ -1,4 +1,4 @@
-# Azure Solutions Blueprint for PCI DSS-Compliant Environments
+# Payment Processing Blueprint for PCI DSS-compliant environments
 ## Data set deployment
 
 This document provides details for managing the user-level experience of the deployed solution. This portion of the deployment helps illustrate how the database, users, and data records help meet the PCI DSS compliance requirements. The steps in this section illustrate how record protection requirements are enabled by encrypting customer records that contain payment card data, establishing monitoring to collect logs, and maintaining security.
