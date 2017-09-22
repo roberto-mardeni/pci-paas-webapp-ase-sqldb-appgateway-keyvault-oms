@@ -1,4 +1,4 @@
-# Azure Solutions Blueprint for PCI DSS-Compliant Environments
+# Payment Processing Blueprint for PCI DSS-compliant environments
 
 ## Script Details: `1-DeployAndConfigureAzureResources.ps1`
 
