@@ -7,6 +7,8 @@ This PowerShell script is used to verify pre-deployment requirements for the Pay
 # Description 
  This PowerShell script automates the installation and verification of the PowerShell modules, as well as configuring the administrative user of the solution. 
  > NOTE: This script MUST be run as *Local Administrator* with elevated privileges. For more information, see [Why do I need to run as local administrator?](https://social.technet.microsoft.com/Forums/scriptcenter/en-US/41a4ba3d-93fd-485b-be22-c877afff1bd8/how-to-run-a-powershell-script-in-admin-account?forum=ITCG)  
+ 
+This and all powershell scripts in the enviroment will run in an ['Unrestricted' execution policy.](https://technet.microsoft.com/en-us/library/ee176961.aspx?f=255&MSPPError=-2147217396)
 
  Running this script is not required, but installation will fail if the following modules have not been properly configured:
 - AzureRM

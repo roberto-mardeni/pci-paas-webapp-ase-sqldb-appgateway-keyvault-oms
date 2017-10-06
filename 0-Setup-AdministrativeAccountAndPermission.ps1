@@ -1,6 +1,8 @@
 <#
  Modules NEEDED FOR this script - * AzureRM   * AzureAD    * AzureDiagnosticsAndLogAnalytics   * SqlServer   * Enable-AzureRMDiagnostics (Script)
- Note: This script requires you to run script in an elevated mode i.e -Run As Administrator-
+ Note: This script requires you to run script in an elevated mode i.e -Run As Administrator- All scripts are running as Set-Executionpolicy -Scope CurrentUser -ExecutionPolicy UnRestricted -Force
+ 
+
   
 This script imports and Install required powershell modules and creates Global AD Admin account.
 
@@ -48,7 +50,7 @@ Param(
 Begin{
     
     $ErrorActionPreference = 'stop'
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy UnRestricted -Force
 
     # Functions
 
