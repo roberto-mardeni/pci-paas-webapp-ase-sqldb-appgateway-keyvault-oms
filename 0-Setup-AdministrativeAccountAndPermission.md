@@ -1,4 +1,4 @@
-# Script Details: `0-Setup-AdministrativeAccountAndPermission.ps1`
+# 0-Setup-AdministrativeAccountAndPermission.ps1
 
 This PowerShell script is used to verify pre-deployment requirements for the Blueprint solution.
  

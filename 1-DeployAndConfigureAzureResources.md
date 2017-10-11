@@ -1,4 +1,4 @@
-# Script Details: `1-DeployAndConfigureAzureResources.ps1`
+# 1-DeployAndConfigureAzureResources.ps1
 
 This PowerShell script is used to deploy the Blueprint. Deploying this solution requires that a subscription be configured with the proper permissions and roles. For more information, see [Script Details: 0-Setup-AdministrativeAccountAndPermission.ps1](./0-Setup-AdministrativeAccountAndPermission.md).
 This and all powershell scripts in the enviroment will run in an ['Unrestricted' execution policy.](https://technet.microsoft.com/en-us/library/ee176961.aspx?f=255&MSPPError=-2147217396)
