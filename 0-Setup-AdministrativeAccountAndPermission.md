@@ -1,8 +1,6 @@
-# Payment Processing Blueprint for PCI DSS-compliant environments
+# Script Details: `0-Setup-AdministrativeAccountAndPermission.ps1`
 
-## Script Details: `0-Setup-AdministrativeAccountAndPermission.ps1`
-
-This PowerShell script is used to verify pre-deployment requirements for the Payment Card Payment processing solution for PCI DSS enablement.
+This PowerShell script is used to verify pre-deployment requirements for the Blueprint solution.
  
 # Description 
  This PowerShell script automates the installation and verification of the PowerShell modules, as well as configuring the administrative user of the solution. 
