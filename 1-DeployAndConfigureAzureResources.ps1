@@ -1,7 +1,7 @@
 <#
 This script deploys and configures Azure resources as a part of a -pre-deployment- activity
 
-This script should run before you start deployment of PCI-PaaS solution templates. Use your Azure AD Global Administrator account with
+This script should run before you start deployment of Blueprint solution templates. Use your Azure AD Global Administrator account with
         Owner permission at Subscription level to execute this script. 
 		If you are not sure about your permissions, run 0-Setup-AdministrativeAccountAndPermission.ps1 before you execute this script.
 
