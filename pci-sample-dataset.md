@@ -1,21 +1,9 @@
-# Payment Processing Blueprint for PCI DSS-compliant environments
+# Azure Blueprint encryption, and monitoring
 ## Data set deployment
 
-This document provides details for managing the user-level experience of the deployed solution. This portion of the deployment helps illustrate how the database, users, and data records help meet the PCI DSS compliance requirements. The steps in this section illustrate how record protection requirements are enabled by encrypting customer records that contain payment card data, establishing monitoring to collect logs, and maintaining security.
+This document provides details for managing the user-level experience of the deployed solution. This portion of the deployment helps illustrate how the database, users, and data records help meet the  compliance requirements. The steps in this section illustrate how record protection requirements are enabled by encrypting customer records that contain payment card data, establishing monitoring to collect logs, and maintaining security.
 
-## One-Step Deployment
-As outlined in the [overview](./index.md) you can deploy SQL encryption and monitoring with the following steps.
 
-1. Deploy OMS logging and resources
-```powershell
-    .\2-EnableOMSLoggingOnResources.ps1 
-    -resourceGroupName contosowebstore 
-    -globalAdminUserName adminXX@contosowebstore.com 
-    -globalAdminPassword **************
-    -subscriptionID XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-```
-
-For detailed usage instructions, [EDIT URL -> ] review the `2-EnableOMSLoggingOnResources.ps1`)` script in the [code repository][code-repo].
   
 ## Testing Transparent Data Encryption (TDE)
 
@@ -42,7 +30,7 @@ You will need to edit the `3-GrantAccessOnDB.sql` script located in the [code re
 
 You can copy the script from the deployment file and run it in a new SQL query.
 
-## Enabling Logging and Monitoring (Manually)
+## Enabling Logging and Monitoring 
 
 The following sections address security controls that are required to enable
 extensive logging, monitoring, security detection, and anti-malware protection. The following was done using the '2-EnableOMSLoggingOnResources.ps1' script.
