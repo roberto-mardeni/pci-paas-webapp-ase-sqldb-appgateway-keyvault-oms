@@ -248,7 +248,7 @@ Process
                 "Microsoft.Compute",
                 "Microsoft.KeyVault",
                 "Microsoft.Network",
-                "Microsoft.AppService"
+                "Microsoft.web"
             )
             if($resourceProviders.length) {
                 Write-Host -ForegroundColor Yellow "`t* Registering resource providers"
