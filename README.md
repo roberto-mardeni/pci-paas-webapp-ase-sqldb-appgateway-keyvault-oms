@@ -1,6 +1,6 @@
 ## Solution overview
 
-For more information about this solution, see [Payment Processing Blueprint for PCI DSS-compliant environments](http://aka.ms/pciblueprint).
+The pci-paas-webapp-ase-sqldb-appgateway-keyvault-oms solution deployment is designed to address both the  [Payment Processing Blueprint for PCI DSS-compliant environments](http://aka.ms/pciblueprint) as well as the [Azure Blueprint Automation: Financial Services Blueprint for Regulated Workloads](http:/aka.ms/fsiblueprint) deployments. 
 
 ## Disclaimer and acknowledgements
 
