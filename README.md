@@ -3,7 +3,7 @@
 The pci-paas-webapp-ase-sqldb-appgateway-keyvault-oms automation  is designed to address both the  [Azure Security and Compliance Blueprint - PCI DSS-compliant Payment Processing environments](http://aka.ms/pciblueprint) as well as the [Azure Security and Compliance Blueprint - FFIEC Financial Services Regulated Workloads](http:/aka.ms/fsiblueprint) deployments. 
 
 
-**[Solution Overview](./AzureHealthDocs.md)**
+**[Solution Overview](https://aka.ms/fsiblueprint)**
 
 **[Set up Admin account, and Validate Modules](./0-Setup-AdministrativeAccountAndPermission.md)**
 
@@ -13,7 +13,7 @@ The pci-paas-webapp-ase-sqldb-appgateway-keyvault-oms automation  is designed to
 
 **[FAQ](https://aka.ms/pcifaqblueprint)** 
 
-**[Threat model](./Compliance/)**
+**[Threat model](https://aka.ms/pciblueprintthreatmodel)**
 
 
 ## Disclaimer and acknowledgements
