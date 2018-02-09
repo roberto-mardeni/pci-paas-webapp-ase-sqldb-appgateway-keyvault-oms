@@ -1,6 +1,4 @@
-# Payment Processing Blueprint for PCI DSS-compliant environments
-
-## FAQ and troubleshooting
+# FAQ and troubleshooting
 
 ### Why am I unable to login or run the PowerShell scripts with my Azure subscription user? 
 > You are required to create an Azure Active Directory (AAD) administrator as specified in the document. This is required because a subscription admin does not automatically receive DS or AAD credentials. This is a security feature that enables RBAC and role separation in Azure.

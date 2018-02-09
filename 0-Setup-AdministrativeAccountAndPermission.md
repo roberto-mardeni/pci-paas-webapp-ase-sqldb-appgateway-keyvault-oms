@@ -1,6 +1,6 @@
 # 0-Setup-AdministrativeAccountAndPermission.ps1
 
-This PowerShell script is used to verify pre-deployment requirements for the Blueprint solution.
+This PowerShell script is used to verify pre-deployment requirements for the pci-paas-webapp-ase-sqldb-appgateway-keyvault-oms solution.
  
 # Description 
  This PowerShell script automates the installation and verification of the PowerShell modules, as well as configuring the administrative user of the solution. 
