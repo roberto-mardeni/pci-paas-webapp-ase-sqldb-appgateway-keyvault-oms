@@ -1,7 +1,20 @@
-# 1-DeployAndConfigureAzureResources.ps1
+## 1-DeployAndConfigureAzureResources.ps1
 
-This PowerShell script is used to deploy the Blueprint. Deploying this solution requires that a subscription be configured with the proper permissions and roles. For more information, see [Script Details: 0-Setup-AdministrativeAccountAndPermission.ps1](./0-Setup-AdministrativeAccountAndPermission.md).
+
+
+ Deploying this solution requires that a subscription be configured with the proper permissions and roles. For more information, see [Script Details: 0-Setup-AdministrativeAccountAndPermission.ps1](./0-Setup-AdministrativeAccountAndPermission.md).
 This and all powershell scripts in the enviroment will run in an ['Unrestricted' execution policy.](https://technet.microsoft.com/en-us/library/ee176961.aspx?f=255&MSPPError=-2147217396)
+
+![](images/Warning-sign.png) **CAUTION** The script adds domain users to the Azure Active Directory (AD) tenant that you specify. We recommend creating a new Azure Active Directory (AD) tenant to test this solution.
+
+![](images/Warning-sign.png) **CAUTION** It is recommended you use a [clean Windows 10](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal) (or similar) VM to deploy the solution to ensure that the correct PowerShell modules get loaded. 
+
+
+![](images/Warning-sign.png) **CAUTION**   If you encounter any issues during the deployment, see [FAQ and troubleshooting](faq.md).
+
+
+This PowerShell script is used to deploy the Blueprint.
+
 
 ```powershell
 .\1-DeployAndConfigureAzureResources.ps1
