@@ -10,7 +10,7 @@ This and all powershell scripts in the enviroment will run in an ['Unrestricted'
 ![](images/Warning-sign.png) **CAUTION** It is recommended you use a [clean Windows 10](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal) (or similar) VM to deploy the solution to ensure that the correct PowerShell modules get loaded. 
 
 
-![](images/Warning-sign.png) **CAUTION**   If you encounter any issues during the deployment, see [FAQ and troubleshooting](faq.md).
+![](images/Warning-sign.png) **CAUTION**   If you encounter any issues during the deployment, see [FAQ and troubleshooting](pci-faq.md).
 
 
 This PowerShell script is used to deploy the Blueprint.
