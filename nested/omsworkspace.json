@@ -11,12 +11,13 @@
     "serviceTier": {
       "type": "string",
       "allowedValues": [
-        "Free",
-        "Standard",
-        "Premium"
+        "Standalone",
+        "PerNode",
+        "PerGB2018"
       ],
+      "defaultValue": "PerNode",
       "metadata": {
-        "description": "Service Tier: Free, Standard, or Premium"
+        "description": "Updated to April 2018 Pricing Model --- Service Tiers: Standalone, PerNode, or PerGB2018"
       }
     },
     "location": {

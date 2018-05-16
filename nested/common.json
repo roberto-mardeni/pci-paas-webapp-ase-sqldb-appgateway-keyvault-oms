@@ -183,7 +183,8 @@
           "type": "providers/diagnosticSettings",
           "name": "Microsoft.Insights/service",
           "dependsOn": [
-            "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+            "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
           ],
           "apiVersion": "2016-09-01",
           "properties": {
