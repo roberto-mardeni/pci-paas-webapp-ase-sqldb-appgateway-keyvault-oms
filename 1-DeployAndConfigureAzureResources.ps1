@@ -363,7 +363,7 @@ Process
             if ($tenantID -eq $null){$tenantID = (Get-AzureRmContext).Tenant.Id}
 
             # Create Active Directory Application
-            Write-Host ("`t* Step 4.1: Attempting to Azure AD application") -ForegroundColor Yellow
+            Write-Host ("`t* Step 4.1: Attempting to create Azure AD application") -ForegroundColor Yellow
             $azureAdApplication = New-AzureRmADApplication -DisplayName $displayName -HomePage $pciAppServiceURL -IdentifierUris $pciAppServiceURL -Password $secnewPasswd
             $azureAdApplicationClientId = $azureAdApplication.ApplicationId.Guid
             $azureAdApplicationObjectId = $azureAdApplication.ObjectId.Guid            
