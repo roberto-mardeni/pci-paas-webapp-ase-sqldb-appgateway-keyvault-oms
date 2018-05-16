@@ -84,7 +84,7 @@ Param
         # Provide CustomDomain that will be used for creating ASE SubDomain & WebApp HostName e.g. contoso.com. This is not a Mandatory parameter. You can also leave
         #   it blank if you want to use built-in domain - azurewebsites.net. 
         [string]
-        $customHostName = "azurewebsites.net",
+        $customHostName = "Adatum.com",
 
         # Provide certificate path if you are willing to provide your own frontend ssl certificate for Application gateway.
         [ValidateScript({
@@ -94,11 +94,11 @@ Param
             else {Throw "Parameter validtion failed due to invalid file path"}
         })]  
         [string]
-        $appGatewaySslCertPath,
+        $appGatewaySslCertPath = "C:\Users\v-kimi\Documents\Azure Blueprint\PCI\PaymentProcessingBP\cert.pfx",
 
         # Enter password for the certificate provided.
         [string]
-        $appGatewaySslCertPwd,
+        $appGatewaySslCertPwd = "P0k3m0nMast3r!",
 
         # Use this swtich in combination with appGatewaySslCertPath parameter to setup frontend ssl on Application gateway.     
         [switch]
@@ -363,7 +363,7 @@ Process
             if ($tenantID -eq $null){$tenantID = (Get-AzureRmContext).Tenant.Id}
 
             # Create Active Directory Application
-            Write-Host ("`t* Step 4.1: Attempting to create Azure AD application") -ForegroundColor Yellow
+            Write-Host ("`t* Step 4.1: Attempting to Azure AD application") -ForegroundColor Yellow
             $azureAdApplication = New-AzureRmADApplication -DisplayName $displayName -HomePage $pciAppServiceURL -IdentifierUris $pciAppServiceURL -Password $secnewPasswd
             $azureAdApplicationClientId = $azureAdApplication.ApplicationId.Guid
             $azureAdApplicationObjectId = $azureAdApplication.ObjectId.Guid            
