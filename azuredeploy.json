@@ -139,13 +139,13 @@
     "pricingTier": {
       "type": "string",
       "allowedValues": [
-        "1",
-        "2",
-        "3"
+        "I1",
+        "I2",
+        "I3"
       ],
-      "defaultValue": "1",
+      "defaultValue": "I1",
       "metadata": {
-        "description": "Defines pricing tier for workers: 1 = Isolated 1, 2 = Isolated 2, 3 = Isolated 3."
+        "description": "Defines pricing tier for workers: I1 = Isolated 1, I2 = Isolated 2, I3 = Isolated 3."
       }
     },
     "capacity": {
@@ -175,7 +175,7 @@
     "bastionSubnetAddressPrefix": "10.0.2.0/24",
     "aseSubnetBaseAddress": "10.0.3",
     "aseSubnetAddressPrefix": "[concat(variables('aseSubnetBaseAddress'),'.0','/24')]",
-    "aseBackendVirtualIp": "[concat(variables('aseSubnetBaseAddress'),'.8')]",
+    "aseBackendVirtualIp": "[concat(variables('aseSubnetBaseAddress'),'.11')]",
     "aseName": "[concat('ase-PCI-', uniqueString(resourceGroup().id))]",
     "aseLocation": "East US",
     "virtualNetworkName": "[substring(concat('vNet-pci-paas-', uniquestring(resourceGroup().id)),0,22)]",
@@ -203,7 +203,6 @@
     "vmBastionTemplateFileName": "vmBastion.json",
     "omsTemplateFileName": "omsworkspace.json",
     "omsWorkspaceName": "[concat('oms-WS-pci-paas-', uniqueString(resourceGroup().id))]",
-    "automationAccountTemplateFileName": "automationAccount.json",
     "tagValues": {
       "layer": "dummy",
       "environment": "Pilot",
@@ -577,12 +576,6 @@
           "asesubnetName": {
             "value": "[variables('asesubnetName')]"
           },
-          "frontEndSize": {
-            "value": "[variables('frontEndSize')]"
-          },
-          "frontEndCount": {
-            "value": "[variables('frontEndCount')]"
-          },
           "aseSubnetAddressPrefix": {
             "value": "[variables('aseSubnetAddressPrefix')]"
           },
@@ -766,7 +759,7 @@
             "value": "[variables('omsRegion')]"
           },
           "serviceTier": {
-            "value": "Free"
+            "value": "PerGB2018"
           },
           "resourcegroupName": {
             "value": "[resourceGroup().name]"
@@ -776,7 +769,6 @@
           },
           "solutionTypes": {
             "value": [
-              "AzureNetworking",
               "AzureNSGAnalytics",
               "AzureAppGatewayAnalytics",
               "KeyVaultAnalytics",
@@ -786,53 +778,10 @@
               "ServiceMap",
               "Security",
               "AntiMalware",
-              "Updates"
+              "Updates",
+              "AzureWebAppsAnalytics",
+              "AzureSQLAnalytics"
             ]
-          },
-          "tagValues": {
-            "value": "[variables('tagValues')]"
-          }
-        }
-      }
-    },
-    {
-      "name": "deploy-AutomationAccount",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "[concat('Microsoft.Resources/deployments', '/' , 'deploy-OMSWorkspaceSolutions')]"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('nestedTemplateFolder'), '/', variables('automationAccountTemplateFileName'), parameters('_artifactsLocationSasToken'))]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "_artifactsLocation": {
-            "value": "[concat(parameters('_artifactsLocation'))]"
-          },
-          "_artifactsLocationSasToken": {
-            "value": "[parameters('_artifactsLocationSasToken')]"
-          },
-
-          "omsId": {
-            "value": "[reference('deploy-OMSWorkspaceSolutions').outputs.workspaceIdOutput.value]"
-          },
-          "omsKey": {
-            "value": "[reference('deploy-OMSWorkspaceSolutions').outputs.sharedKeyOutput.value]"
-          },
-          "omsWorkspaceName": {
-            "value": "[variables('omsWorkspaceName')]"
-          },
-          "automationAccountName": {
-            "value": "[parameters('automationAccountName')]"
-          },
-          "automationRegion": {
-            "value": "[variables('automationRegion')]"
-          },
-          "omsworkspaceRegion": {
-            "value": "[variables('omsRegion')]"
           },
           "tagValues": {
             "value": "[variables('tagValues')]"

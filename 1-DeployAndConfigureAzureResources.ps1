@@ -113,6 +113,7 @@ Begin
         # Preference variable
         $ProgressPreference = 'SilentlyContinue'
         $ErrorActionPreference = 'Stop'
+        $WarningPreference = "SilentlyContinue"
         Set-Executionpolicy -Scope CurrentUser -ExecutionPolicy UnRestricted -Force
         
         #Change Path to Script directory
@@ -132,6 +133,16 @@ Begin
         Write-Host -ForegroundColor Yellow "`nCreating Certificates folder to store self-signed certificates."
         if(!(Test-path $pwd\certificates)){mkdir $pwd\certificates -Force | Out-Null }
 
+        ### Create Output  folder to store logs, deploymentoutputs etc.
+        if(! (Test-Path -Path "$(Split-Path $MyInvocation.MyCommand.Path)\output")) {
+            New-Item -Path $(Split-Path $MyInvocation.MyCommand.Path) -Name 'output' -ItemType Directory
+        }
+        else {
+            Remove-Item -Path "$(Split-Path $MyInvocation.MyCommand.Path)\output" -Force -Recurse
+            Start-Sleep -Seconds 2
+            New-Item -Path $(Split-Path $MyInvocation.MyCommand.Path) -Name 'output' -ItemType Directory
+        }
+        $outputFolderPath = "$(Split-Path $MyInvocation.MyCommand.Path)\output"
         ########### Functions ###########
         Write-Host -ForegroundColor Green "`nStep 1: Loading functions."
 
@@ -210,7 +221,7 @@ Begin
         
         ########### Establishing connection to Azure ###########
         try {
-            Write-Host -ForegroundColor Green "`nStep 2: Establishing connection to Azure AD & Subscription"
+            Write-Host -ForegroundColor Green "`nStep 2: Establishing connection to Azure AD,Subscription & Registering Resource Provider."
 
             # Connecting to MSOL Service
             Write-Host -ForegroundColor Yellow  "`t* Connecting to Msol service."
@@ -244,7 +255,6 @@ Process
             # Register RPs
             $resourceProviders = @(
                 "Microsoft.Storage",
-                "Microsoft.Automation",
                 "Microsoft.Compute",
                 "Microsoft.KeyVault",
                 "Microsoft.Network",
@@ -278,11 +288,6 @@ Process
             # Copy files from the local storage staging location to the storage account container
             New-AzureStorageContainer -Name $storageContainerName -Context $StorageAccountContext -Permission Container -ErrorAction SilentlyContinue | Out-Null
 
-            $ArtifactFilePaths = Get-ChildItem $pwd\scripts -Recurse -File | ForEach-Object -Process {$_.FullName}
-            foreach ($SourcePath in $ArtifactFilePaths) {
-                $BlobName = $SourcePath.Substring(($PWD.Path).Length + 1)
-                Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $storageContainerName -Context $StorageAccountContext -Force | Out-Null
-            }
             $ArtifactFilePaths = Get-ChildItem $pwd\nested -Recurse -File | ForEach-Object -Process {$_.FullName}
             foreach ($SourcePath in $ArtifactFilePaths) {
                 $BlobName = $SourcePath.Substring(($PWD.Path).Length + 1)
@@ -358,8 +363,8 @@ Process
             if ($tenantID -eq $null){$tenantID = (Get-AzureRmContext).Tenant.Id}
 
             # Create Active Directory Application
-            Write-Host ("`t* Step 4.1: Attempting to Azure AD application") -ForegroundColor Yellow
-            $azureAdApplication = New-AzureRmADApplication -DisplayName $displayName -HomePage $pciAppServiceURL -IdentifierUris $pciAppServiceURL -Password $newPassword
+            Write-Host ("`t* Step 4.1: Attempting to create Azure AD application") -ForegroundColor Yellow
+            $azureAdApplication = New-AzureRmADApplication -DisplayName $displayName -HomePage $pciAppServiceURL -IdentifierUris $pciAppServiceURL -Password $secnewPasswd
             $azureAdApplicationClientId = $azureAdApplication.ApplicationId.Guid
             $azureAdApplicationObjectId = $azureAdApplication.ObjectId.Guid            
             Write-Host ("`t* Azure Active Directory apps creation successful. AppID is " + $azureAdApplication.ApplicationId) -ForegroundColor Yellow
@@ -454,24 +459,11 @@ Process
             New-AzureRmResourceGroup -Name $resourceGroupName -location $location -Force | Out-Null
             Write-Host -ForegroundColor Yellow "`t* ResoureGroup - $resourceGroupName has been created successfully"
             Start-Sleep -Seconds 5
-
-            # Create Automation Account
-            Write-Host -ForegroundColor Yellow "`t* Creating an Automation Account -$automationaccname at $automationAcclocation"
-            New-AzureRmAutomationAccount -Name "$automationaccname" -location "$automationAcclocation" -resourceGroupName "$resourceGroupName" | Out-Null
-            Write-Host -ForegroundColor Yellow "`t* Automation Account has been created successfully"
-            Start-Sleep -Seconds 5
-
-            # Create Automation Run-As Account to execute runbooks
-            Write-Host -ForegroundColor Yellow "`t* Creating RunAs account for runbooks to execute."
-            .\1-click-deployment-nested\New-RunAsAccount.ps1 -ResourceGroup $resourceGroupName -AutomationAccountName $automationaccname -SubscriptionId $subscriptionID -ApplicationDisplayName $automationADApplication `
-            -SelfSignedCertPlainPassword $newPassword -CreateClassicRunAsAccount $false | Out-Null
-            Start-Sleep -Seconds 5
             }
 
         catch {
             throw $_
         }
-
         # Initiate template deployment
         try {
             Write-Host -ForegroundColor Green "`nStep 8: Initiating template deployment."
@@ -483,7 +475,7 @@ Process
             $status=1
             do
             {
-                if($count -lt 2){                
+                if($count -lt 10){                
                 Write-Host "`t`t-> Checking deployment in 60 secs.." -ForegroundColor Yellow
                 Start-sleep -seconds 60
                 $count +=1
@@ -494,7 +486,7 @@ Process
                     
                 }
             }
-            until ((Get-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -ErrorAction SilentlyContinue) -ne $null)             
+            until ((Get-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name $deploymentName -ErrorAction SilentlyContinue ) -ne $null)             
             if($status){
                 Write-Host -ForegroundColor Yellow "`t* Deployment has been submitted successfully."
             }            
@@ -598,7 +590,7 @@ Process
             #Granting Users & ServicePrincipal full access on Keyvault
             Write-Host ("`t* Giving Key Vault access permissions to the Users and ServicePrincipal ..") -ForegroundColor Yellow
             Set-AzureRmKeyVaultAccessPolicy -VaultName $KeyVaultName -UserPrincipalName $userPrincipalName -ResourceGroupName $resourceGroupName -PermissionsToKeys all  -PermissionsToSecrets all
-            Set-AzureRmKeyVaultAccessPolicy -VaultName $KeyVaultName -UserPrincipalName $SqlAdAdminUserName -ResourceGroupName $resourceGroupName -PermissionsToKeys all -PermissionsToSecrets all
+            Set-AzureRmKeyVaultAccessPolicy -VaultName $KeyVaultName -UserPrincipalName $SqlAdAdminUserName -ResourceGroupName $resourceGroupName -PermissionsToKeys all -PermissionsToSecrets all 
             Set-AzureRmKeyVaultAccessPolicy -VaultName $KeyVaultName -ServicePrincipalName $azureAdApplicationClientId -ResourceGroupName $resourceGroupName -PermissionsToKeys all -PermissionsToSecrets all
             Write-Host ("`t* Granted permissions to the users and serviceprincipals ..") -ForegroundColor Yellow
 
@@ -628,10 +620,93 @@ Process
             Write-Host -ForegroundColor Red "`t Column encryption has failed."
             throw $_
         }
+            # Enabling the Azure Security Center Policies.
+        try {
+            Write-Host ("`nStep 13: Enable Azure-Security-Center Policies." ) -ForegroundColor Green
+            Write-Host "" -ForegroundColor Yellow
+            
+            $azureRmProfile = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile
+            Write-Host "`t* Checking AzureRM Context." -ForegroundColor Yellow
+            $currentAzureContext = Get-AzureRmContext
+            $profileClient = New-Object Microsoft.Azure.Commands.ResourceManager.Common.RMProfileClient($azureRmProfile)
+            
+            Write-Host "`t* Getting Access Token and Setting Variables to Invoke REST-API." -ForegroundColor Yellow
+            Write-Host ("`t* Getting access token for tenant " + $currentAzureContext.Subscription.TenantId) -ForegroundColor Yellow
+            $token = $profileClient.AcquireAccessToken($currentAzureContext.Subscription.TenantId)
+            $token = $token.AccessToken
+            $Script:asc_clientId = "1950a258-227b-4e31-a9cf-717495945fc2"              # Well-known client ID for Azure PowerShell
+            $Script:asc_redirectUri = "urn:ietf:wg:oauth:2.0:oob"                      # Redirect URI for Azure PowerShell
+            $Script:asc_resourceAppIdURI = "https://management.azure.com/"             # Resource URI for REST API
+            $Script:asc_url = 'management.azure.com'                                   # Well-known URL endpoint
+            $Script:asc_version = "2015-06-01-preview"                                 # Default API Version
+            $PolicyName = 'default'
+            $asc_APIVersion = "?api-version=$asc_version" #Build version syntax.
+            $asc_endpoint = 'policies' #Set endpoint.
+            
+            Write-Host "`t* Creating auth header." -ForegroundColor Yellow
+            Set-Variable -Name asc_requestHeader -Scope Script -Value @{"Authorization" = "Bearer $token"}
+            Set-Variable -Name asc_subscriptionId -Scope Script -Value $currentAzureContext.Subscription.Id
+            
+            #Retrieve existing policy and build hashtable
+            Write-Host "`t* Retrieving data for $PolicyName..." -ForegroundColor Yellow
+            $asc_uri = "https://$asc_url/subscriptions/$asc_subscriptionId/providers/microsoft.Security/$asc_endpoint/$PolicyName$asc_APIVersion"
+            $asc_request = Invoke-RestMethod -Uri $asc_uri -Method Get -Headers $asc_requestHeader
+            $a = $asc_request 
+            $json_policy = @{
+                properties = @{
+                    policyLevel = $a.properties.policyLevel
+                    policyName = $a.properties.name
+                    unique = $a.properties.unique
+                    logCollection = $a.properties.logCollection
+                    recommendations = $a.properties.recommendations
+                    logsConfiguration = $a.properties.logsConfiguration
+                    omsWorkspaceConfiguration = $a.properties.omsWorkspaceConfiguration
+                    securityContactConfiguration = $a.properties.securityContactConfiguration
+                    pricingConfiguration = $a.properties.pricingConfiguration
+                }
+            }
+            if ($json_policy.properties.recommendations -eq $null){Write-Error "The specified policy does not exist."; return}
+            
+            #Set all params to on,
+            $json_policy.properties.recommendations.patch = "On"
+            $json_policy.properties.recommendations.baseline = "On"
+            $json_policy.properties.recommendations.antimalware = "On"
+            $json_policy.properties.recommendations.diskEncryption = "On"
+            $json_policy.properties.recommendations.acls = "On"
+            $json_policy.properties.recommendations.nsgs = "On"
+            $json_policy.properties.recommendations.waf = "On"
+            $json_policy.properties.recommendations.sqlAuditing = "On"
+            $json_policy.properties.recommendations.sqlTde = "On"
+            $json_policy.properties.recommendations.ngfw = "On"
+            $json_policy.properties.recommendations.vulnerabilityAssessment = "On"
+            $json_policy.properties.recommendations.storageEncryption = "On"
+            $json_policy.properties.recommendations.jitNetworkAccess = "On"
+            $json_policy.properties.recommendations.appWhitelisting = "On"
+            $json_policy.properties.securityContactConfiguration.areNotificationsOn = $true
+            $json_policy.properties.securityContactConfiguration.sendToAdminOn = $true
+            $json_policy.properties.logCollection = "On"
+            $json_policy.properties.pricingConfiguration.selectedPricingTier = "Standard"
+            try {
+                $json_policy.properties.securityContactConfiguration.securityContactEmails = $siteAdminUserName
+            }
+            catch {
+                $json_policy.properties.securityContactConfiguration | Add-Member -NotePropertyName securityContactEmails -NotePropertyValue $siteAdminUserName
+            }
+            Start-Sleep 5
+            
+            Write-Host "`t* Enabling ASC Policies.." -ForegroundColor Yellow
+            $JSON = ($json_policy | ConvertTo-Json -Depth 3)
+            $asc_uri = "https://$asc_url/subscriptions/$asc_subscriptionId/providers/microsoft.Security/$asc_endpoint/$PolicyName$asc_APIVersion"
+            $result = Invoke-WebRequest -Uri $asc_uri -Method Put -Headers $asc_requestHeader -Body $JSON -UseBasicParsing -ContentType "application/json"
+            
+        }
+        catch {
+            throw $_
+        }
     }
 End
     {
-        Write-Host -ForegroundColor Green "Common variables created for deployment"
+        Write-Host -ForegroundColor Green "`nCommon variables created for deployment"
 
         Write-Host -ForegroundColor Green "`n########################### Template Input Parameters - Start ###########################"
         $templateInputTable = New-Object -TypeName Hashtable
@@ -664,8 +739,23 @@ End
         $outputTable.Add('receptionistPassword',$newPassword)
         $outputTable.Add('passwordValidityPeriod',$passwordValidityPeriod)
         $outputTable | Sort-Object Name  | Format-Table -AutoSize -Wrap -Expand EnumOnly 
-        Write-Host -ForegroundColor Green "`n########################### Other Deployment Details - End ###########################"
 
+        #Merging the Two Tables 
+        $MergedtemplateoutputTable = $templateInputTable + $outputTable
+
+        Write-Host -ForegroundColor Green "`n########################### Other Deployment Details - End ###########################`n"
+
+        ## Store deployment output to CloudDrive folder else to Output folder.
+        if (Test-Path -Path "$HOME\CloudDrive") {
+            Write-Host "CloudDrive was found. Saving deploymentOutput.json to CloudDrive.."
+            $MergedtemplateoutputTable | ConvertTo-Json | Out-File -FilePath "$HOME\CloudDrive\deploymentOutput.json"
+            Write-Host "Output file has been generated - $HOME\CloudDrive\deploymentOutput.json." -ForegroundColor Green
+        }
+        Else {
+            Write-Host "CloudDrive was not found. Saving deploymentOutput.json to Output folder.."
+            $MergedtemplateoutputTable | ConvertTo-Json | Out-File -FilePath "$outputFolderPath\deploymentOutput.json"
+            Write-Host "Output file has been generated - $outputFolderPath\deploymentOutput.json." -ForegroundColor Green
+        }
     }
 
 
