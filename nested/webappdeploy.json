@@ -59,11 +59,11 @@
     "pricingTier": {
       "type": "string",
       "allowedValues": [
-        "1",
-        "2",
-        "3"
+        "I1",
+        "I2",
+        "I3"
       ],
-      "defaultValue": "1",
+      "defaultValue": "I1",
       "metadata": {
         "description": "Defines pricing tier for workers: 1 = Isolated 1, 2 = Isolated 2, 3 = Isolated 3."
       }
@@ -94,9 +94,9 @@
         }
       },
       "sku": {
-        "name": "[concat('I',parameters('pricingTier'))]",
+        "name": "[parameters('pricingTier')]",
         "tier": "Isolated",
-        "size": "[concat('I',parameters('pricingTier'))]",
+        "size": "[parameters('pricingTier')]",
         "family": "I",
         "capacity": "[parameters('capacity')]"
       }
@@ -150,7 +150,8 @@
           "type": "config",
           "name": "logs",
           "dependsOn": [
-            "[concat('Microsoft.Web/sites/', parameters('siteName'))]"
+            "[concat('Microsoft.Web/sites/', parameters('siteName'))]",
+            "connectionstrings"
           ],
           "tags": {
             "displayName": "LogConfig"
@@ -203,7 +204,8 @@
             "Request_Source": "IbizaWebAppExtensionCreate"
           },
           "dependsOn": [
-            "[concat('Microsoft.Web/sites/', parameters('siteName'))]"
+            "[concat('Microsoft.Web/sites/', parameters('siteName'))]",
+            "logs"
           ]
         },
         {
@@ -213,8 +215,7 @@
           "apiVersion": "2015-08-01",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/', parameters('siteName'))]",
-            "connectionstrings",
-            "logs"
+            "[concat('Microsoft.insights/components/', parameters('siteName'))]"
           ],
           "tags": {
             "displayName": "WebAppMSDeploy"
@@ -241,21 +242,19 @@
           "name": "[concat(parameters('siteName'), '/', 'www.',parameters('customHostName'))]",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/', parameters('siteName'))]",
-            "[resourceId('Microsoft.Web/sites/hostNameBindings', parameters('siteName'), parameters('customHostName'))]",
-            "MSDeploy"
+            "[resourceId('Microsoft.Web/sites/hostNameBindings', parameters('siteName'), parameters('customHostName'))]"
           ],
           "properties": {
             "siteName": "[parameters('siteName')]"
           }
         },
-
         {
           "apiVersion": "2015-08-01",
           "type": "config",
           "name": "appsettings",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/', parameters('siteName'))]",
-            "MSDeploy"
+            "[resourceId('Microsoft.Web/sites/hostNameBindings', parameters('siteName'), concat('www.',parameters('customHostName')))]"
           ],
           "properties": {
             "applicationADID": "[parameters('clientId')]",

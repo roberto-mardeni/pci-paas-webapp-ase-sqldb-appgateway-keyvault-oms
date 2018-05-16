@@ -1,12 +1,12 @@
-# 0-Setup-AdministrativeAccountAndPermission.ps1
+# Payment Processing Blueprint for PCI DSS-compliant environments
 
-This PowerShell script is used to verify pre-deployment requirements for the pci-paas-webapp-ase-sqldb-appgateway-keyvault-oms solution.
+## Script Details: `0-Setup-AdministrativeAccountAndPermission.ps1`
+
+This PowerShell script is used to verify pre-deployment requirements for the Payment Card Payment processing solution for PCI DSS enablement.
  
 # Description 
  This PowerShell script automates the installation and verification of the PowerShell modules, as well as configuring the administrative user of the solution. 
  > NOTE: This script MUST be run as *Local Administrator* with elevated privileges. For more information, see [Why do I need to run as local administrator?](https://social.technet.microsoft.com/Forums/scriptcenter/en-US/41a4ba3d-93fd-485b-be22-c877afff1bd8/how-to-run-a-powershell-script-in-admin-account?forum=ITCG)  
- 
-This and all powershell scripts in the enviroment will run in an ['Unrestricted' execution policy.](https://technet.microsoft.com/en-us/library/ee176961.aspx?f=255&MSPPError=-2147217396)
 
  Running this script is not required, but installation will fail if the following modules have not been properly configured:
 - AzureRM
@@ -34,6 +34,18 @@ This command will validate or install any missing PowerShell modules which are r
  ```
 
  This command will deploy installed modules, and setup the solution on a **new subscription**. It will create the user `adminXX@contosowebstore.com` with a randomly generated strong password (15 characters minimum, with uppercase and lowercase letters, and at least one number and one special character.) 
+ 
+## Example 3: Install required modules and Configure your global admin.
+
+```powershell
+.\0-Setup-AdministrativeAccountAndPermission.ps1 
+    -azureADDomainName contosowebstore.com
+    -tenantId XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+    -subscriptionId XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+    -configureGlobalAdmin 
+    -installModules
+ ``` 
+This command will validate or install any missing PowerShell modules which are required for this foundational architecture. It will create the user `adminXX@contosowebstore.com` with a randomly generated strong password (15 characters minimum, with uppercase and lowercase letters, and at least one number and one special character.) 
  
 # Required parameters
 

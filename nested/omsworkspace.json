@@ -9,15 +9,16 @@
       }
     },
     "serviceTier": {
-      "type": "string",
+      "type": "String",
       "allowedValues": [
-        "Free",
-        "Standard",
-        "Premium"
+            "Standalone",
+            "PerNode",
+            "PerGB2018"
       ],
-      "metadata": {
-        "description": "Service Tier: Free, Standard, or Premium"
-      }
+      "defaultValue": "PerGB2018",
+        "metadata": {
+          "description": "UPDATED TO APRIL 2018 PRICING--Specifies the service tier of the workspace: Standalone, PerNode, Per-GB"
+        }
     },
     "location": {
       "type": "string",
