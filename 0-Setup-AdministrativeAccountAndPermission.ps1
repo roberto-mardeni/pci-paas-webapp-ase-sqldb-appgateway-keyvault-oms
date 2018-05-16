@@ -1,20 +1,19 @@
 <#
  Modules NEEDED FOR this script - * AzureRM   * AzureAD    * AzureDiagnosticsAndLogAnalytics   * SqlServer   * Enable-AzureRMDiagnostics (Script)
- Note: This script requires you to run script in an elevated mode i.e -Run As Administrator-
+ Note: This script requires elevated permissions to run successfully. i.e -Run As Administrator-
   
-This script imports and Install required powershell modules and creates Global AD Admin account.
+    This script imports and installs required PowerShell modules and creates a Global AD Admin account associated to an AAD .onmicrosoft.com domain.
 
-    This script will import or installs (if not available) required powershell modules to run this deployment. It also creates Global Administrator account 
-        and assigns Owner permission on a given subscription.
+    This script will import or install (if unavailable) required PowerShell modules for running this deployment. It can also create a Global Administrator account 
+        and assign Owner permissions on the given subscription.
 		
-    If you already have Azure AD Global Administrator account with Subscription Owner permission, You can execute this script without any parameters.  
+    If the required modules are installed and you already have an Azure AD Global Administrator account with Subscription Owner permissions, you can execute this script without any parameters.  
         Example - .\0-Setup-AdministrativeAccountAndPermission.ps1
-    If you are deploying the solution on a -new subscription- you will need to run script with 'configureGlobalAdmin' switch  - otherwise script will throw a validation error.provide parameters 
-	    Example - .\0-Setup-AdministrativeAccountAndPermission.ps1 -azureADDomainName contoso.com -tenantId xxxxxx-9c8f-4e1e-941b-xxxxxx -subscriptionId xxxxx-f760-4a7e-bd98-xxxxxxxx 
-        -configureGlobalAdmin
+    If you are deploying the solution on a -new subscription- you will need to run the script with the 'configureGlobalAdmin' switch - otherwise the script will throw a validation error for providing additional parameters. 
+	    Example - .\0-Setup-AdministrativeAccountAndPermission.ps1 -azureADDomainName contoso.com -tenantId xxxxxx-9c8f-4e1e-941b-xxxxxx -subscriptionId xxxxx-f760-4a7e-bd98-xxxxxxxx -configureGlobalAdmin
        
-    This script auto generates Global Admin as 'admin+(2 length random number between 10-99)@azureADDomainName' and 15 length strong password for the account 
-        For example - Username - admin45@contoso.com ; Password 
+    This script will auto generate a Global Admin as 'admin+(2-char, random number between 10-99)@azureADDomainName' and a strong, 15-char password for the account if the -configureGlobalAdmin switch is used. 
+        For example - Username - admin45@contoso.com ; Password (will be printed to console if -configureGlobalAdmin switch is used)
     
 #>
 	
@@ -135,10 +134,15 @@ Process
                 'AzureDiagnosticsAndLogAnalytics' = '0.1'
             }
         if ($installModules) {
-              Write-Host "Trying to install listed modules.." -ForegroundColor Yellow
-        $requiredModules
-        Install-RequiredModules -moduleNames $requiredModules
-        Write-Host "All the required modules are now installed. You can now re-run the script without 'installModules' switch." -ForegroundColor Yellow
+            Write-Host "Trying to install listed modules.." -ForegroundColor Yellow
+            $requiredModules
+            $modules = $requiredModules.Keys
+            # Completely uninstalling old versions to avoid module import conflicts. 
+            foreach ($module in $modules){
+                Uninstall-Module -Name $module -ErrorAction SilentlyContinue -force
+            }
+            Install-RequiredModules -moduleNames $requiredModules
+            Write-Host "All the required modules are now installed. You can now re-run the script without 'installModules' switch." -ForegroundColor Yellow
         }
 
         <# This script takes a SubscriptionID, ResourceType, ResourceGroup and a workspace ID as parameters, analyzes the subscription or
