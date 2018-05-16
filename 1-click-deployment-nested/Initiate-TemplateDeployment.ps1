@@ -93,7 +93,7 @@
 
     Begin
     {
-        Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy UnRestricted -Force
+        Set-Executionpolicy -Scope CurrentUser -ExecutionPolicy UnRestricted -Force
         $ErrorActionPreference = 'Stop'
         cd $PSScriptRoot
 
