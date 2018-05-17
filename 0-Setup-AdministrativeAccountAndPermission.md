@@ -16,6 +16,13 @@ This PowerShell script is used to verify pre-deployment requirements for the Pay
 - SqlServer
 - Enable-AzureRMDiagnostics (Script)
 
+This script will attempt to install the following versions of these PowerShell modules:
+- AzureRM - 5.1.1
+- AzureAD - 2.0.0.131
+- MSOnline - 1.1.166.0
+- AzureDiagnosticsAndLogAnalytics - 0.1
+- SqlServer - 21.0.17262
+
 ## Example 1: Installing required modules
 
 ```powershell
@@ -92,3 +99,15 @@ To test [SQL Server PowerShell](https://msdn.microsoft.com/en-us/library/hh23168
 ```powershell
  $Credential = Get-Credential   Connect-AzureAD -Credential $Credential   Get-Module -ListAvailable -Name Sqlps;
 ```
+## Troubleshooting your PowerShell Deployment scripts
+
+Please verify that running the 0-Setup-AdministrativeAccountAndPermission.ps1 results in no error messages. This script configures the open PowerShell session for correctly deploying the ARM templates and performing deployment steps throughout running the 1-DeployAndConfigureAzureResources.ps1 script. 
+
+If module import/installation challenges are experienced when running the 0-Setup-AdministrativeAccountAndPermission.ps1 script, navigate to C:\Program Files\WindowsPowerShell\Modules and remove any directories associated to the following items:
+- AzureRM
+- AzureAD
+- MSOnline
+- AzureDiagnosticsAndLogAnalytics
+- SqlServer
+
+As the setup script will run through module validation and import, the script can be run again with the -installmodules switch for setting up the PowerShell environment for running the deployment. 

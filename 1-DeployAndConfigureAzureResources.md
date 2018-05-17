@@ -153,3 +153,9 @@ This variable can be changed to a different location than the default value `eas
 >$automationAcclocation
 
 This variable can be changed to a different location than the default value `eastus2`. Changing this setting requires that the deployment is monitored to ensure its successful completion.
+
+## Troubleshooting the deployment script
+
+If errors are experience when attempting to run the 1-DeployAndConfigureAzureResources.ps1 script, verify that the correct version PowerShell modules were imported when running the 0-Setup-AdministrativeAccountAndPermission.ps1 script. 
+
+
