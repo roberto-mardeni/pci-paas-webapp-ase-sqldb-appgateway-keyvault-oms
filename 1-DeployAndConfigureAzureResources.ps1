@@ -105,7 +105,20 @@ Param
         $enableSSL,
 
         # Use this switch to enable new password policy with 60 days expiry at Azure AD Domain level.
-        [switch]$enableADDomainPasswordPolicy               
+        [switch]$enableADDomainPasswordPolicy,
+
+        # Provide the location for the resources to provision
+        [ValidateNotNullOrEmpty()]
+        [ValidateSet('australiaeast','australiasoutheast','brazilsouth','canadacentral','canadaeast','centralindia','centralus','eastasia','eastus','eastus2','francecentral','francesouth','japaneast','japanwest','koreacentral','koreasouth','northcentralus','northeurope','southcentralus','southeastasia','southindia','uksouth','ukwest','westcentralus','westeurope','westindia','westus','westus2'
+        , ignorecase=$True)]
+        [string]
+        $location = 'eastus',
+
+        # Provide the location for the automatio account to provision
+        [ValidateNotNullOrEmpty()]
+        [ValidateSet('australiasoutheast','brazilsouth','centralindia','eastus2','japaneast','northeurope','southcentralus','southeastasia','uksouth','westcentralus','westeurope', ignorecase=$True)]
+        [string]
+        $automationAcclocation = 'eastus2'               
     )
 
 Begin
@@ -183,8 +196,6 @@ Begin
         Write-Host -ForegroundColor Yellow "`t* Functions loaded successfully."
 
         ########### Manage Variables ###########
-        $location = 'eastus'
-        $automationAcclocation = 'eastus2'
         $scriptFolder = Split-Path -Parent $PSCommandPath
         $sqlAdAdminUserName = "sqlAdmin@"+$azureADDomainName
         $receptionistUserName = "receptionist_EdnaB@"+$azureADDomainName
