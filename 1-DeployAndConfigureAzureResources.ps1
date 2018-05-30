@@ -45,7 +45,7 @@ Param
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [ValidateLength(1,64)]
-        [ValidatePattern('^[\w]+$')]
+        [ValidatePattern('^[\w]+[\w\-]*$')]
         [string]
         $resourceGroupName,
 
