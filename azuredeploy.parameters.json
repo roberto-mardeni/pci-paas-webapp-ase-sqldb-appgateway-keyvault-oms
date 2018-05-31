@@ -38,6 +38,9 @@
     },
     "omsRegion": {
       "value": "East US"
+    },
+    "appInsightsLocation": {
+      "value": "South Central US"
     }
   }
 }

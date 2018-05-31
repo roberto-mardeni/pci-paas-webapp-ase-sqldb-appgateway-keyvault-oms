@@ -171,6 +171,17 @@
         "UK South",
         "West Europe"
       ]
+    },
+    "appInsightslocation": {
+      "type": "string",
+      "allowedValues": [
+        "East US",
+        "South Central US",
+        "North Europe",
+        "West Europe",
+        "Southeast Asia",
+        "West US 2"
+      ]
     }
   },
   "variables": {
@@ -748,6 +759,9 @@
           },
           "capacity":{
             "value":"[parameters('capacity')]"
+          },
+          "appInsightslocation": {
+            "value": "[parameters('appInsightslocation')]"
           }
         }
       }

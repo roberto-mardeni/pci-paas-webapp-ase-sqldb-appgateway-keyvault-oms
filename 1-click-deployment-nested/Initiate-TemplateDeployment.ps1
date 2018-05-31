@@ -91,7 +91,10 @@
 	$sqlAdAdminUserPassword,
 
     [string] [Parameter(Mandatory=$true)] 
-	$omsLocation
+    $omsLocation,
+    
+    [string] [Parameter(Mandatory=$true)] 
+    $appInsightslocation
     )
 
     Begin
@@ -155,6 +158,7 @@
         $OptionalParameters["sqlAdAdminUserName"] = "$sqlAdAdminUserName"
         $OptionalParameters["sqlAdAdminUserPassword"] = "$sqlAdAdminUserPassword"
         $OptionalParameters["omsRegion"] = "$omsLocation"
+        $OptionalParameters["appInsightslocation"] = "$appInsightslocation"
     }
     Process
     {

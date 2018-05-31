@@ -74,6 +74,17 @@
       "metadata": {
         "description": "Defines the number of instances that will be allocated to the app service plan."
       }
+    },
+    "appInsightslocation": {
+      "type": "string",
+      "allowedValues": [
+        "East US",
+        "South Central US",
+        "North Europe",
+        "West Europe",
+        "Southeast Asia",
+        "West US 2"
+      ]
     }
   },
   "variables": {
@@ -195,7 +206,7 @@
           "type": "microsoft.insights/components",
           "name": "[parameters('siteName')]",
           "apiVersion": "2014-04-01",
-          "location": "South Central US",
+          "location": "[parameters('appInsightslocation')]",
           "tags": {
             "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('siteName'))]": "Resource"
           },
