@@ -158,6 +158,19 @@
      "kind":{
         "type": "string",
         "defaultValue": "ASEV2"
+    },
+    "omsRegion": {
+      "type": "string",
+      "allowedValues": [
+        "Australia Southeast",
+        "Canada Central",
+        "Central India",
+        "East US",
+        "Japan East",
+        "Southeast Asia",
+        "UK South",
+        "West Europe"
+      ]
     }
   },
   "variables": {
@@ -187,7 +200,6 @@
     "capacity": 1,
     "retentionPolicy": 2,
     "automationRegion": "East US 2",
-    "omsRegion": "East US",
     "sqlFirewallIps": {
       "startIp": "[concat(variables('aseSubnetBaseAddress'), '.1')]",
       "endIp": "[concat(variables('aseSubnetBaseAddress'), '.255')]"
@@ -756,7 +768,7 @@
             "value": "[variables('omsWorkspaceName')]"
           },
           "location": {
-            "value": "[variables('omsRegion')]"
+            "value": "[parameters('omsRegion')]"
           },
           "serviceTier": {
             "value": "PerGB2018"

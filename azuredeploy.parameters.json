@@ -35,6 +35,9 @@
     },
     "sqlAdAdminUserPassword": {
       "value": "GEN-PASSWORD"
+    },
+    "omsRegion": {
+      "value": "East US"
     }
   }
 }

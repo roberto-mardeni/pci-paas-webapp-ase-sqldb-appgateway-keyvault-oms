@@ -88,7 +88,10 @@
 	$sqlAdAdminUserName,
 
     [string] [Parameter(Mandatory=$true)] 
-	$sqlAdAdminUserPassword
+	$sqlAdAdminUserPassword,
+
+    [string] [Parameter(Mandatory=$true)] 
+	$omsLocation
     )
 
     Begin
@@ -151,6 +154,7 @@
         $OptionalParameters["azureAdApplicationObjectId"] = "$azureAdApplicationObjectId"
         $OptionalParameters["sqlAdAdminUserName"] = "$sqlAdAdminUserName"
         $OptionalParameters["sqlAdAdminUserPassword"] = "$sqlAdAdminUserPassword"
+        $OptionalParameters["omsRegion"] = "$omsLocation"
     }
     Process
     {

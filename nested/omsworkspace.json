@@ -23,10 +23,14 @@
     "location": {
       "type": "string",
       "allowedValues": [
+        "Australia Southeast",
+        "Canada Central",
+        "Central India",
         "East US",
-        "West Europe",
+        "Japan East",
         "Southeast Asia",
-        "Australia Southeast"
+        "UK South",
+        "West Europe"
       ]
     },
     "resourceGroupName": {
