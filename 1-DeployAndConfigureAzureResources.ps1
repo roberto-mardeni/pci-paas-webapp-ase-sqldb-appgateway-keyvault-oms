@@ -109,28 +109,35 @@ Param
 
         # Provide the location for the resources to provision
         [ValidateNotNullOrEmpty()]
-        [ValidateSet('australiaeast','australiasoutheast','brazilsouth','canadacentral','canadaeast','centralindia','centralus','eastasia','eastus','eastus2','francecentral','francesouth','japaneast','japanwest','koreacentral','koreasouth','northcentralus','northeurope','southcentralus','southeastasia','southindia','uksouth','ukwest','westcentralus','westeurope','westindia','westus','westus2'
+        [ValidateSet('Australia East','Australia Southeast','Brazil South','Canada Central','Canada East','Central India','Central US','East Asia','East US','East US 2','France Central','France South','Japan East','Japan West','Korea Central','Korea South','North Central US','North Europe','South Central US','South India','Southeast Asia','UK South','UK West','West Central US','West Europe','West India','West US','West US 2'
         , ignorecase=$True)]
         [string]
-        $location = 'eastus',
+        $location = 'East US',
+
+        # Provide the ASE location for the resources to provision
+        [ValidateNotNullOrEmpty()]
+        [ValidateSet('Australia East','Australia Southeast','Brazil South','Canada Central','Canada East','Central India','Central US','East Asia','East US','East US 2','France Central','Japan East','Japan West','Korea Central','Korea South','North Central US','North Europe','South Central US','South India','Southeast Asia','UK South','UK West','West Central US','West Europe','West India','West US','West US 2'
+        , ignorecase=$True)]
+        [string]
+        $aselocation = 'East US',
 
         # Provide the location for the automation account to provision
         [ValidateNotNullOrEmpty()]
-        [ValidateSet('australiasoutheast','brazilsouth','centralindia','eastus2','japaneast','northeurope','southcentralus','southeastasia','uksouth','westcentralus','westeurope', ignorecase=$True)]
+        [ValidateSet('Australia Southeast','Brazil South','Canada Central','Central India','East US 2','Japan East','North Europe','South Central US','Southeast Asia','UK South','West Central US','West Europe', ignorecase=$True)]
         [string]
-        $automationAcclocation = 'eastus2',
+        $automationAcclocation = 'East US 2',
 
         # Provide the location for the OMS workspace to provision
         [ValidateNotNullOrEmpty()]
-        [ValidateSet('australiaeast','canadacentral','centralindia','eastus','japaneast','southeastasia','uksouth','westeurope', ignorecase=$True)]
+        [ValidateSet('Australia Southeast','Canada Central','Central India','East US','Japan East','Southeast Asia','UK South','West Central US','West Europe', ignorecase=$True)]
         [string]
-        $omslocation = 'eastus',
+        $omslocation = 'East US',
 
         # Provide the location for the Application Insights to provision
         [ValidateNotNullOrEmpty()]
-        [ValidateSet('eastus','northeurope','southcentralus','southeastasia','westeurope','westus2', ignorecase=$True)]
+        [ValidateSet('East US','North Europe','South Central US','Southeast Asia','West Europe','West US 2', ignorecase=$True)]
         [string]
-        $appInsightslocation = 'southcentralus'
+        $appInsightslocation = 'South Central US'
     )
 
 Begin
@@ -492,7 +499,7 @@ Process
             Write-Host -ForegroundColor Green "`nStep 8: Initiating template deployment."
             # Submitting templte deployment to new powershell session
             Write-Host -ForegroundColor Yellow "`t* Submitting deployment"
-            Start-Process Powershell -ArgumentList "-NoExit", ".\1-click-deployment-nested\Initiate-TemplateDeployment.ps1 -subscriptionID $subscriptionID -globalAdminUserName $globalAdminUserName -globalAdminPassword $globalAdminPassword -deploymentName $deploymentName -resourceGroupName $resourceGroupName -location $location -templateFile '$scriptFolder\azuredeploy.json' -_artifactsLocation $_artifactsLocation -_artifactsLocationSasToken $_artifactsLocationSasToken -sslORnon_ssl $sslORnon_ssl -certData $certData -certPassword $certPassword -aseCertData $aseCertData -asePfxBlobString $asePfxBlobString -asePfxPassword $asePfxPassword -aseCertThumbprint $aseCertThumbprint -bastionHostAdministratorPassword $newPassword -sqlAdministratorLoginPassword $newPassword -sqlThreatDetectionAlertEmailAddress $SqlTDAlertEmailAddress -automationAccountName $automationaccname -customHostName $customHostName -azureAdApplicationClientId $azureAdApplicationClientId -azureAdApplicationClientSecret $newPassword -azureAdApplicationObjectId $azureAdApplicationObjectId -sqlAdAdminUserName $sqlAdAdminUserName -sqlAdAdminUserPassword $newPassword -omsLocation $omsLocation -appInsightslocation $appInsightslocation"
+            Start-Process Powershell -ArgumentList "-NoExit", ".\1-click-deployment-nested\Initiate-TemplateDeployment.ps1 -subscriptionID $subscriptionID -globalAdminUserName $globalAdminUserName -globalAdminPassword $globalAdminPassword -deploymentName $deploymentName -resourceGroupName $resourceGroupName -location '$location' -templateFile '$scriptFolder\azuredeploy.json' -_artifactsLocation $_artifactsLocation -_artifactsLocationSasToken $_artifactsLocationSasToken -sslORnon_ssl $sslORnon_ssl -certData $certData -certPassword $certPassword -aseCertData $aseCertData -asePfxBlobString $asePfxBlobString -asePfxPassword $asePfxPassword -aseCertThumbprint $aseCertThumbprint -bastionHostAdministratorPassword $newPassword -sqlAdministratorLoginPassword $newPassword -sqlThreatDetectionAlertEmailAddress $SqlTDAlertEmailAddress -automationAccountName $automationaccname -customHostName $customHostName -azureAdApplicationClientId $azureAdApplicationClientId -azureAdApplicationClientSecret $newPassword -azureAdApplicationObjectId $azureAdApplicationObjectId -sqlAdAdminUserName $sqlAdAdminUserName -sqlAdAdminUserPassword $newPassword -omsLocation '$omsLocation' -appInsightslocation '$appInsightslocation' -aselocation '$aselocation'"
             Write-Host "`t`t-> Waiting for deployment $deploymentName to submit.. " -ForegroundColor Yellow
             $count=0
             $status=1

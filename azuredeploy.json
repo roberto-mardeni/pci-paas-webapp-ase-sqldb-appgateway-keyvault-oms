@@ -169,6 +169,7 @@
         "Japan East",
         "Southeast Asia",
         "UK South",
+        "West Central US",
         "West Europe"
       ]
     },
@@ -181,6 +182,38 @@
         "West Europe",
         "Southeast Asia",
         "West US 2"
+      ]
+    },
+    "aselocation": {
+      "type": "string",
+      "allowedValues": [
+        "Australia East",
+        "Australia Southeast",
+        "Brazil South",
+        "Canada Central",
+        "Canada East",
+        "Central India",
+        "Central US",
+        "East Asia",
+        "East US 2",
+        "East US",
+        "France Central",
+        "Japan East",
+        "Japan West",
+        "Korea Central",
+        "Korea South",
+        "North Central US",
+        "North Europe",
+        "South Central US",
+        "South India",
+        "Southeast Asia",
+        "UK South",
+        "UK West",
+        "West Central US",
+        "West Europe",
+        "West India",
+        "West US 2",
+        "West US"
       ]
     }
   },
@@ -201,7 +234,6 @@
     "aseSubnetAddressPrefix": "[concat(variables('aseSubnetBaseAddress'),'.0','/24')]",
     "aseBackendVirtualIp": "[concat(variables('aseSubnetBaseAddress'),'.11')]",
     "aseName": "[concat('ase-PCI-', uniqueString(resourceGroup().id))]",
-    "aseLocation": "East US",
     "virtualNetworkName": "[substring(concat('vNet-pci-paas-', uniquestring(resourceGroup().id)),0,22)]",
     "keyVaultName": "[substring(concat('kv-pcisamples','-',uniquestring(resourceGroup().id)),0,22)]",
     "ipSslAddressCount": 0,
@@ -456,7 +488,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "apiVersion": "2016-03-30",
-      "location": "[variables('aseLocation')]",
+      "location": "[parameters('aseLocation')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkSecurityGroups/', variables('aseNsgGroupName'))]",
         "[concat('Microsoft.Network/networkSecurityGroups/', variables('wafNsgGroupName'))]",
@@ -585,7 +617,7 @@
             "value": "[variables('aseName')]"
           },
           "aseLocation": {
-            "value": "[variables('aseLocation')]"
+            "value": "[parameters('aseLocation')]"
           },
           "ipSslAddressCount": {
             "value": "[variables('ipSslAddressCount')]"
@@ -629,7 +661,7 @@
         },
         "parameters": {
           "appServiceEnvironmentName": { "value": "[variables('aseName')]" },
-          "existingAseLocation": { "value": "[variables('aseLocation')]" },
+          "existingAseLocation": { "value": "[parameters('aseLocation')]" },
           "pfxBlobString": { "value": "[parameters('asepfxBlobString')]" },
           "password": { "value": "[parameters('asepfxPassword')]" },
           "certificateThumbprint": { "value": "[parameters('asecertThumbprint')]" },
@@ -731,7 +763,7 @@
             "value": "[variables('webSiteName')]"
           },
           "location": {
-            "value": "[variables('aseLocation')]"
+            "value": "[parameters('aseLocation')]"
           },
           "ClientId": {
             "value": "[parameters('azureAdApplicationClientId')]"
