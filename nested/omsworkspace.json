@@ -24,9 +24,11 @@
       "type": "string",
       "allowedValues": [
         "East US",
+        "South Central US",
+        "North Europe",
         "West Europe",
         "Southeast Asia",
-        "Australia Southeast"
+        "West US 2"
       ]
     },
     "resourceGroupName": {

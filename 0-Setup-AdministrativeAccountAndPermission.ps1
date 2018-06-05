@@ -128,8 +128,8 @@ Process
           ### Install required powershell modules
             $requiredModules=@{
                 'AzureRM' = '5.1.1';
-                'AzureAD' = '2.0.0.131';
-                'SqlServer' = '21.0.17262';
+                'AzureAD' = '2.0.1.6';
+                'SqlServer' = '21.0.17199';
                 'MSOnline' = '1.1.166.0';
                 'AzureDiagnosticsAndLogAnalytics' = '0.1'
             }
@@ -206,7 +206,7 @@ Process
             # Creating Azure Global Admin Account
             $adAdmin = New-AzureADUser -DisplayName "Global Admin Azure PCI Samples" -PasswordProfile $newUserPasswordProfile -AccountEnabled $true `
             -MailNickName "PCIAdmin" -UserPrincipalName $globalADAdminUserName
-            Start-Sleep -Seconds 10
+            Start-Sleep -Seconds 20
             if (Get-AzureADUser -ObjectId "$globalADAdminUserName"){
                 Write-Host -ForegroundColor Yellow "`t* Azure AD Global Admin - $globalADAdminUserName created successfully."
             }
